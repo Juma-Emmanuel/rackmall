@@ -1,0 +1,10 @@
+<ul>
+    {% for item in data.values %}
+        <li>
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.description }}</p>
+            <img src="{{ item.image_url }}" alt="{{ item.title }}">
+        </li>
+    {% endfor %}
+    </ul>
+    
