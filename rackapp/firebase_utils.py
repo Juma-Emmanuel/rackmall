@@ -1,3 +1,6 @@
+import firebase_admin
+from firebase_admin import db
+
 import json
 import requests
 from django.conf import settings
@@ -19,6 +22,8 @@ def upload_image(image_bytes, filename):
     bucket = storage.bucket()
     blob = bucket.blob(filename)
     blob.upload_from_string(image_bytes, content_type='image/jpeg')  # Adjust content type as needed
+    image_url = blob.public_url
+
     return blob.public_url
 def upload_image1(image_bytes, filename):
     storage_url = f"https://firebasestorage.googleapis.com/v0/b/{settings.FIREBASE_CONFIG['storageBucket']}/o/{filename}"

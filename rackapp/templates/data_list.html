@@ -1,5 +1,29 @@
-<ul>
-    {% for item in data.values %}
+
+{% load static %}
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>Racket Games Store</title>
+</head>
+<body>
+    <header>
+        <h1>Racket Games Store</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Cart</a></li>
+                <li><a href="#">Account</a></li>
+                <li><a href="#">Login/Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="product">
+        {% for item in data.values %}
         <li>
             <h2>{{ item.title }}</h2>
             <p>{{ item.description }}</p>
@@ -7,4 +31,71 @@
         </li>
     {% endfor %}
     </ul>
-    
+        <button>Add to Cart</button>
+    </section>
+
+    <section class="product">
+        <img src="images/bad2.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+
+    <section class="product">
+        <img src="images/badmint.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <section class="product">
+        <img src="images/badminton.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <section class="product">
+        <img src="images/Fostoy-si.jpg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <section class="product">
+        <img src="images/images.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <section class="product">
+        <img src="images/images.png" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+
+
+    <section class="product">
+        <img src="images/tt.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+
+    <section class="product">
+        <img src="images/tt1.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <section class="product">
+        <img src="images/tt2.jpeg" alt="Racket Game">
+        <h2>Racket Game 2</h2>
+        <p>Description of the racket game...</p>
+        <button>Add to Cart</button>
+    </section>
+    <!-- More product sections here -->
+
+    <footer>
+        <p>&copy; 2023 Racket Games Store. All rights reserved.</p>
+    </footer>
+</body>
+</html>

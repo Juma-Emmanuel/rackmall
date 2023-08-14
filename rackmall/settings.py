@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -118,6 +118,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -138,4 +142,7 @@ from firebase_admin import credentials
 
 # Initialize Firebase using the credentials JSON file you downloaded from Firebase
 cred = credentials.Certificate('/home/emmanuel/myprograms/vault/racket-data-firebase-adminsdk-vwvj6-8256a80ca7.json')
-firebase_admin.initialize_app(cred, {'storageBucket': 'racket-data.appspot.com'})
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'racket-data.appspot.com',
+    'databaseURL': 'https://racket-data-default-rtdb.firebaseio.com/'
+})
