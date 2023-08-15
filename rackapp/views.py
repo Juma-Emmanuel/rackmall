@@ -14,6 +14,7 @@ def post_data_view(request):
         data = {
             "title": title,
             "description": description,
+            
         }
 
         # Call push_data to post the data and get the response
@@ -36,16 +37,8 @@ def post_data_view(request):
 
 
 
-
-   
-
-
-
-
-
-
-
-
+from django.views.generic import FormView
+        
 def data_list_view(request):
     data = get_data()
-    return render(request, "data_list.html", {"data": data})
+    return render(request, "data_list.html", {"data": data, })

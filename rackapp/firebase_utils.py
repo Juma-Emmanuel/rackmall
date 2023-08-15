@@ -18,14 +18,14 @@ def get_data():
     data = response.json()
     return data
 
-def upload_image(image_bytes, filename):
+def upload_image1(image_bytes, filename):
     bucket = storage.bucket()
     blob = bucket.blob(filename)
     blob.upload_from_string(image_bytes, content_type='image/jpeg')  # Adjust content type as needed
     image_url = blob.public_url
 
     return blob.public_url
-def upload_image1(image_bytes, filename):
+def upload_image(image_bytes, filename):
     storage_url = f"https://firebasestorage.googleapis.com/v0/b/{settings.FIREBASE_CONFIG['storageBucket']}/o/{filename}"
     response = requests.post(storage_url, data=image_bytes)
     return response
