@@ -9,12 +9,13 @@ def post_data_view(request):
     if request.method == "POST":
         title = request.POST.get("title")
         description = request.POST.get("description")
+        url = request.POST.get("url")
         image = request.FILES.get("image")
 
         data = {
             "title": title,
             "description": description,
-            
+            'url': url, 
         }
 
         # Call push_data to post the data and get the response

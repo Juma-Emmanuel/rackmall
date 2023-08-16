@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Racket Games Store product upload</title>
+</head>
+<body>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="title">Title:</label>
@@ -7,7 +16,45 @@
     <textarea name="description" required></textarea>
     <br>
     <label for="image">Image:</label>
-    <input type="file" name="image">
+    <input type="file" name="file[]" id="file">
+    <input type="hidden" name ="url" id ="url">
+    <br>
+    <button type="button" onclick="uploadimage()">Upload</button>
     <br>
     <button type="submit">Post Data</button>
 </form>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+ <script>
+var config ={
+"apiKey": "AIzaSyAAxb2N1Ie7cRBzyrTnykjTacB5_IqlefY",
+"authDomain": "racket-data.firebaseapp.com",
+"databaseURL": "https://racket-data-default-rtdb.firebaseio.com/",
+"projectId": "racket-data",
+"storageBucket": "gs://racket-data.appspot.com",
+"messagingSenderId": "1025185944579",
+"appId": "1:1025185944579:web:8128536f6b534cad0f6a36"
+}
+firebase.initializeApp(config);
+function uploadimage(){
+ var storage = firebase.storage();
+
+
+ var file=document.getElementById("file").files[0];
+ var storageRef = storage.ref();
+
+ var thisref = storageRef.child(file.name).put(file);
+ thisref.then(function(snapshot) {
+    console.log("File uploaded successfully");
+    snapshot.ref.getDownloadURL().then(function(downloadURL) {
+      console.log("Got URL");
+      document.getElementById("url").value = downloadURL;
+      alert("File uploaded successfully");
+    });
+  }).catch(function(error) {
+    console.error("Error uploading file:", error);
+  });
+}
+
+ </script>
+ </html>
