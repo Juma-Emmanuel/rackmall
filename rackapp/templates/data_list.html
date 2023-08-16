@@ -12,7 +12,7 @@
     <header>
         <h1>Racket Games Store</h1>
         <nav>
-            <ul>
+            <ul >
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Products</a></li>
                 <li><a href="#">Cart</a></li>
@@ -23,15 +23,20 @@
     </header>
 
     <section class="product">
-        {% for item in data.values %}
-        <li>
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
-            <img src="{{ item.url }}" alt="{{ item.title }}">
-            <button>Add to Cart</button>
-        </li>
-    {% endfor %}
-    </ul>
+    
+            {% for item in data.values %}
+            
+                <div class="prod-container">
+                    <img src="{{ item.url }}" alt="{{ item.title }}">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+                 <button>Add to Cart</button>
+            </div>
+            
+        {% endfor %}
+        
+
+    
         
     </section> 
    

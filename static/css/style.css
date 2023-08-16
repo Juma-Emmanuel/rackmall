@@ -30,14 +30,33 @@ nav a {
     border: 1px solid #ccc;
     padding: 1rem;
     margin: 1rem;
-    display: inline-block;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    gap: 2.5rem;
+    align-items: center;
     vertical-align: top;
-    width: 30%;
+    widrth: 30%;
     box-sizing: border-box;
+    adisplay: flex;
+    aflex-wrap: wrap;
+    ajustify-content: center;
 }
 
-.product img {
-    max-width: 100%;
+
+.prod-container{
+    width: 100%;
+    height: auto;
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.prod-container img {
+    width: 34vh;
+    height: 30vh;
 }
 
 footer {
