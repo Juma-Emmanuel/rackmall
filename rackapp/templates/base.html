@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+    .box{display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    gap: 2.5rem;
+    }
+    </style>
+</head>
+<body>
+    
+    <a href="/">Home</a>
+    <a href="{% url 'rackapp:about' %}">about</a>
+    <a href="/allproducts/">Categories</a>
+
+    {% block content %}
+    {% endblock %}
+    </body>
+    </html> 

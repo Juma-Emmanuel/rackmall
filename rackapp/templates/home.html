@@ -1,0 +1,42 @@
+
+    {% extends 'base.html' %}
+    {% block title %}Home{% endblock %}
+
+    {% block content %}
+    <style>
+        .box{
+       
+        }
+        .col{
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            align-items: center;
+            gap: 2.5rem;
+        }
+        .prod-container{
+            border: 1px solid green;
+            align-items: center;
+            
+            display: flex;
+            flex-direction: column;
+        }
+        </style>
+    <h1> HOMEPAGE</h1>
+    <p>{{myname}}</p>
+    
+    <div class="col">
+        {% for p in product_list %}
+        <div class="prod-container">
+        <h3>{{p.title}}</h3>
+        <img src="{{p.image.url}}" alt="" width="200px ">
+        <br>
+        <p>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</p>
+        <a href="" style="background-color: aqua; color: black;">Add To Cart</a>
+       </div>
+        {% endfor %}
+       
+    </div>
+</body>
+</html> 
+    {% endblock %}
+   

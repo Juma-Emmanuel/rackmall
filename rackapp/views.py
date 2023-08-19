@@ -1,9 +1,15 @@
+from typing import Any, Dict
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import storage
 import datetime
 from django.shortcuts import render, redirect
 from .firebase_utils import push_data, get_data, upload_image
+from .models import *
+
+
+from django.views.generic import FormView
+from django.views.generic import TemplateView
 # Create your views here.
 def post_data_view(request):
     if request.method == "POST":
@@ -35,11 +41,38 @@ def post_data_view(request):
 
     return render(request, "post_data.html")
 
-
-
-
-from django.views.generic import FormView
         
 def data_list_view(request):
     data = get_data()
     return render(request, "data_list.html", {"data": data, })
+class HomeView(TemplateView):
+    template_name = "home.html"
+ 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['myname'] = "Juma Emmanuel"
+        context['product_list'] = Product.objects.all().order_by("-id")
+        
+        return context
+
+class AllProductsView(TemplateView):
+    template_name = "allproducts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['allcategories'] = Category.objects.all()
+        
+        return context
+
+class ProductDetailView(TemplateView):
+    template_name = "productdetail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['allcategories'] = Category.objects.all()
+        slug = kwargs['slug']
+        print(slug, "9999999")
+        return context
+
+class AboutView(TemplateView):
+    template_name = "about.html"
