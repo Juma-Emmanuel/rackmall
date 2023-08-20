@@ -32,12 +32,7 @@ def post_data_view(request):
             response_data = response.json()
             data_key = response_data.get("name")
 
-            if image:
-                image_url = upload_image(image.read(), image.name)
-                # Save the image URL in the Realtime Database under the specific data key
-                db.reference(f"data/{data_key}").update({"image_url": image_url})
 
-        return redirect("data_list_view")
 
     return render(request, "post_data.html")
 
@@ -45,6 +40,7 @@ def post_data_view(request):
 def data_list_view(request):
     data = get_data()
     return render(request, "data_list.html", {"data": data, })
+
 class HomeView(TemplateView):
     template_name = "home.html"
  
