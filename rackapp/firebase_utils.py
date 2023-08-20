@@ -7,13 +7,14 @@ from django.conf import settings
 import firebase_admin
 from firebase_admin import storage
 
-def push_data(data):
-    url = f"{settings.FIREBASE_CONFIG['databaseURL']}/data.json"
+def push_data(data, subnode_path):
+    url = f"{settings.FIREBASE_CONFIG['databaseURL']}/{subnode_path}.json"
     response = requests.post(url, json=data)
     return response
 
-def get_data():
-    url = f"{settings.FIREBASE_CONFIG['databaseURL']}/data.json"
+
+def get_data(subnode_path):
+    url = f"{settings.FIREBASE_CONFIG['databaseURL']}/{subnode_path}.json"
     response = requests.get(url)
     data = response.json()
     return data

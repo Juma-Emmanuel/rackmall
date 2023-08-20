@@ -11,6 +11,41 @@ from .models import *
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 # Create your views here.
+
+def post_product(request):    
+    if request.method == 'POST':
+        category = request.POST['category']
+        title  = request.POST['title']
+        description  = request.POST['description']
+        marked_price  = request.POST['marked_price']
+        selling_price  = request.POST['selling_price']
+        return_policy  = request.POST['return_policy']
+        warranty  = request.POST['warranty']
+        url  = request.POST['url']
+
+  # Post the data to Firebase
+        
+        data_to_post = {
+            "title": title,
+            "description": description,
+            "marked_price": marked_price,
+            "selling_price": selling_price,
+            "warranty": warranty,
+            "return_policy": return_policy,
+            "url": url,
+        }
+        
+        if category == 'lawn_tennis':
+            response=push_data(data_to_post, "product/lawn_tennis")
+        elif category == 'badminton':
+            response=push_data(data_to_post, "product/badminton")
+        elif category == 'table_tennis':
+            response=push_data(data_to_post, "product/table_tennis")
+        else:            
+            response=push_data(data_to_post, "product/other")
+
+
+    return render(request, 'post_product.html')
 def post_data_view(request):
     if request.method == "POST":
         title = request.POST.get("title")
