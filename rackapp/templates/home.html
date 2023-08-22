@@ -25,16 +25,37 @@
     <p>{{myname}}</p>
     
     <div class="col">
-        {% for p in product_list %}
+        {% for p in product_list1.values%}
         <div class="prod-container">
         <h3>{{p.title}}</h3>
-        <img src="{{p.image.url}}" alt="" width="200px ">
+        <img src="{{p.url}}" alt="" width="200px ">
         <br>
         <p>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</p>
         <a href="" style="background-color: aqua; color: black;">Add To Cart</a>
        </div>
-        {% endfor %}
-       
+        {% endfor %}       
+    </div>
+    <div class="col">
+        {% for p in product_list2.values%}
+        <div class="prod-container">
+        <h3>{{p.title}}</h3>
+        <img src="{{p.url}}" alt="" width="200px ">
+        <br>
+        <p>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</p>
+        <a href="" style="background-color: aqua; color: black;">Add To Cart</a>
+       </div>
+        {% endfor %}       
+    </div>
+    <div class="col">
+        {% for p in product_list3.values%}
+        <div class="prod-container">
+        <h3>{{p.title}}</h3>
+        <img src="{{p.url}}" alt="" width="200px ">
+        <br>
+        <p>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</p>
+        <a href="" style="background-color: aqua; color: black;">Add To Cart</a>
+       </div>
+        {% endfor %}       
     </div>
 </body>
 </html> 
