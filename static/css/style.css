@@ -36,11 +36,7 @@ nav a {
     gap: 2.5rem;
     align-items: center;
     vertical-align: top;
-    widrth: 30%;
-    box-sizing: border-box;
-    adisplay: flex;
-    aflex-wrap: wrap;
-    ajustify-content: center;
+    
 }
 
 
