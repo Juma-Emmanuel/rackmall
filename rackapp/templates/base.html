@@ -16,7 +16,7 @@
     
     <a href="/">Home</a>
     <a href="{% url 'rackapp:about' %}">about</a>
-    <a href="/allproducts/">Categories</a>
+    <a href="{% url 'rackapp:allproducts' %}">Categories</a>
 
     {% block content %}
     {% endblock %}
