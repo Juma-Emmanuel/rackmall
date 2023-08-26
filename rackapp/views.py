@@ -46,30 +46,6 @@ def post_product(request):
 
 
     return render(request, 'post_product.html')
-def post_data_view(request):
-    if request.method == "POST":
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        url = request.POST.get("url")
-        image = request.FILES.get("image")
-
-        data = {
-            "title": title,
-            "description": description,
-            'url': url, 
-        }
-
-        # Call push_data to post the data and get the response
-        response = push_data(data)
-
-        if response.status_code == 200:
-            # Parse the response JSON to get the generated key
-            response_data = response.json()
-            data_key = response_data.get("name")
-
-
-
-    return render(request, "post_data.html")
 
         
 def data_list_view(request):
