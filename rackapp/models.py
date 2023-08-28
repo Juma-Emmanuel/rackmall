@@ -63,6 +63,38 @@ class CartProduct(models.Model):
 
     def __str__(self):
         return "Cart: " + str(self.cart.id) + "CartProduct: " + str(self.id) 
+       
+class Pro_duct(models.Model):
+    title = models.CharField(max_length=200)
+    url =  models.CharField(max_length=300)
+    marked_price = models.PositiveIntegerField()
+    selling_price = models.PositiveIntegerField()
+    description = models.TextField()
+    warranty = models.CharField(max_length=300, null=True, blank=True)
+    return_policy =  models.CharField(max_length=300, null=True, blank=True)
+    view_count = models.PositiveBigIntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+class F_Cart(models.Model):
+    customer = models.ForeignKey(
+        Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    total = models.PositiveIntegerField(default=0)
+    def __str__(self):
+        return "F_Cart: " + str(self.id) 
+
+class F_CartProduct(models.Model):
+    cart = models.ForeignKey(F_Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Pro_duct, on_delete=models.CASCADE)
+    rate = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField()
+    subtotal = models.PositiveIntegerField()
+
+    def __str__(self):
+        return "F_Cart: " + str(self.cart.id) + "F_CartProduct: " + str(self.id) 
  
 
 ORDER_STATUS = (
