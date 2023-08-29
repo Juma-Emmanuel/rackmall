@@ -27,9 +27,20 @@ for product_id, pro_category in product_data.items():
         return_policy = pro_item.get('return_policy', '')
         warranty = pro_item.get('warranty', '')
        
-        print(title)
+        existing_product = Pro_duct.objects.filter(title=title).first()
 
-        # Create Django model instances
-        product = Pro_duct.objects.create(title=title, url=url, marked_price=marked_price, warranty=warranty, selling_price=selling_price, description=description, return_policy=return_policy)
+
+        if existing_product:
+            # Update the existing record
+            existing_product.url = url
+            existing_product.marked_price = marked_price
+            existing_product.selling_price = selling_price
+            existing_product.description = description
+            existing_product.return_policy = return_policy
+            existing_product.warranty = warranty
+            existing_product.save()
+        else:
+            # Create Django model instances
+            product = Pro_duct.objects.create(title=title, url=url, marked_price=marked_price, warranty=warranty, selling_price=selling_price, description=description, return_policy=return_policy)
 
 

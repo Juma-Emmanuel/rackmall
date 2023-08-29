@@ -37,7 +37,21 @@
     <br>
   
 
-    <button type="submit">Post Data</button>
+    <button type="submit" name="post_data">Post Data</button>
+
+</form>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label for="new_category">Create new category:</label>
+ 
+  <input type="text" name="new_category" >
+  <br>
+  
+  <br>
+
+
+  <button type="submit" name="add_category">Add Category</button>
+
 </form>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>

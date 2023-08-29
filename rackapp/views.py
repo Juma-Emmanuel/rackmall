@@ -7,11 +7,59 @@ from django.shortcuts import render, redirect
 import requests
 from .firebase_utils import push_data, get_data, upload_image
 from .models import *
+from .fetch import *
 
 
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 # Create your views here.
+def post_product(request):    
+    if request.method == 'POST':
+        if 'post_data' in request.POST:
+            category = request.POST['category']
+            title  = request.POST['title']
+            description  = request.POST['description']
+            marked_price  = request.POST['marked_price']
+            selling_price  = request.POST['selling_price']
+            return_policy  = request.POST['return_policy']
+            warranty  = request.POST['warranty']
+            url  = request.POST['url']
+            data_to_post = {
+            "title": title,
+            "category": category,
+            "description": description,
+            "marked_price": marked_price,
+            "selling_price": selling_price,
+            "warranty": warranty,
+            "return_policy": return_policy,
+            "url": url,
+            }
+            push_data(data_to_post, "products")
+        elif 'add_category' in request.POST:
+            new_category = request.POST['new_category']
+
+            category_to_post = {
+            "title":new_category,
+              }
+            response = push_data(category_to_post, "categories")
+
+        
+        '''if category == 'lawn_tennis':
+            response=push_data(data_to_post, "product/lawn_tennis")
+        elif category == 'badminton':
+            response=push_data(data_to_post, "product/badminton")
+        elif category == 'table_tennis':
+            response=push_data(data_to_post, "product/table_tennis")
+        else:            
+            response=push_data(data_to_post, "product/other")'''
+        
+        
+        
+      
+        
+
+    return render(request, 'post_product.html')
+
 
 class FirebaseDataView(TemplateView):
     template_name = 'trialview.html'
@@ -121,7 +169,7 @@ def post_data_to_firebase(request):
         cunit2 = request.POST['cunit2']
 
         # Create a Django model instance and save it to the database
-        firebase_data = FirebaseData(campus=campus, course=course)
+        
         
 
         # Post the data to Firebase
@@ -182,7 +230,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['myname'] = "Juma Emmanuel"
         context['product_list'] = Product.objects.all().order_by("-id")
-        
+        context['product'] = Pro_duct.objects.all()
         return context
 
 class AllProductsView(TemplateView):
