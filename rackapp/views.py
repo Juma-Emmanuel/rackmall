@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from .firebase_utils import push_data, get_data, upload_image
 from .models import *
 from .fetch import *
+from .syncer import *
 
 
 
@@ -69,16 +70,8 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['myname'] = "Juma Emmanuel"
-        data1 = get_data("product/lawn_tennis")
-        data2 = get_data("product/other")
-        data3= get_data("data/")
-        data4= get_data("product/")
         context['product'] = Pro_duct.objects.all()
-        #data5= get_data("product/")
-        context['product_list1'] = data1
-        context['product_list2'] = data2
-        context['product_list3'] = data3
-        context['product_list4'] = data4
+        context['product_list'] = get_data("product/")
         return context
 
 class AllProductsView(TemplateView):
