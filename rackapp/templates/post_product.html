@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Racket Games Store product upload</title>
-</head>
-<body>
+{% extends 'base.html' %}
+    {% block title %}Home{% endblock %}
+
+    {% block content %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="category">Select Product category:</label>
@@ -79,3 +74,4 @@ function uploadimage(){
 
  </script>
  </html>
+ {% endblock %}

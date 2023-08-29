@@ -8,7 +8,7 @@ urlpatterns = [
     #path('', views.index, name="index"),
     
     path('data-list/', views.data_list_view, name="data_list_view"),
-    #path('', views.post_product, name="post_product"),
+    path('post_product/', views.post_product, name="post_product"),
 
  
     path('', HomeView.as_view(), name="home"),
