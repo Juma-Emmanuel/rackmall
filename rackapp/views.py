@@ -118,7 +118,11 @@ class AddToCartView(TemplateView):
             cart_obj = F_Cart.objects.get(id=cart_id)
             this_product_in_cart = cart_obj.f_cartproduct_set.filter(
                 product=product_obj)
-           
+            ''' cart_data = {
+            'customer': cart_obj.customer, 
+            'total': cart_obj.total,       
+             # Add other fields as needed
+             }'''
           
             # item already exists in cart
             if this_product_in_cart.exists():
@@ -132,7 +136,18 @@ class AddToCartView(TemplateView):
                 cart_obj.total += product_obj.selling_price
                 cart_obj.save()
                 #update_data_to_firebase()
-                
+                '''cartproduct_data = {
+                    
+                   'cp_detail':{
+                    'title': cartproduct.product.title,
+                    'rate': cartproduct.rate,
+                    'quantity': cartproduct.quantity,
+                    'subtotal': cartproduct.subtotal
+
+                }
+                    }
+                cartproduct_info.push(cartproduct_data)
+                cart_info.set(cart_data)'''
                 # new item is already in cart
                 #update_data_in_firebase(cart_id)
                 #post_cart_to_firebase(cart_obj)
@@ -145,6 +160,7 @@ class AddToCartView(TemplateView):
                 cart_obj.total += product_obj.selling_price
                 cart_obj.save()
                
+                
         # create if cart doesn't exists                                                 
         else:
             cart_obj = F_Cart.objects.create(total=0)
@@ -154,7 +170,11 @@ class AddToCartView(TemplateView):
             
             cart_obj.total += product_obj.selling_price
             cart_obj.save()
-           
+            
+            
+        
+        
+    
         return context
 
 class MyCartView(TemplateView):
@@ -183,7 +203,26 @@ class ManageCartView(TemplateView):
                 cp_obj.save()
                 cart_obj.total += cp_obj.rate
                 cart_obj.save()
+                #cart_info.set(cart_data)
+                #cartproduct_info.update(cartproduct_data)
+                cart_data={
+               'total': cart_obj.total,
+                }
+                '''cartproduct_data = {
+                    
+               'product_id': cp_obj.product.id,
+                 
+                'rate': cp_obj.rate,
+                    'quantity': cp_obj.quantity,
+                'subtotal': cp_obj.subtotal
+                 # Add other fields as needed
+                 
+                   }
+                cartproduct_info.set({cp_id: cartproduct_data})'''
+               
+                #cart_info.set(cart_data)
                 
+                #update_cproduct_in_firebase()
                 
             elif action == "dcr":
                  cp_obj.quantity -= 1
@@ -191,13 +230,52 @@ class ManageCartView(TemplateView):
                  cp_obj.save()
                  cart_obj.total -= cp_obj.rate
                  cart_obj.save()
-                       
+                # cart_info.set(cart_data)
+                 #cartproduct_info.set(cartproduct_data) 
+                 cart_data={
+                  'total': cart_obj.total,
+                 }
+                 '''cartproduct_data = {
+             
+                   'cp_detail':{
+             
+                 'title':cp_obj.product.title,
+                'rate': cp_obj.rate,
+                    'quantity': cp_obj.quantity,
+                'subtotal': cp_obj.subtotal
+                 # Add other fields as needed
+                 }
+                   }
+                 cartproduct_info.update({cp_id: cartproduct_data})'''
+                 cart_info.set(cart_data)
+                # update_cproduct_in_firebase()
+                 
+                 
+                     
+                 
             elif action == "rmv":
                 cart_obj.total -= cp_obj.subtotal
                 cart_obj.save()
                 cp_obj.delete() 
-                                                 
+                
+               # cart_info.set(cart_data)
+                
+                #cartproduct_info.delete(cartproduct_data)
+                cart_data={
+               'total': cart_obj.total,
+                }
+                cart_info.set(cart_data)
+                #update_cproduct_in_firebase()
+                
+                                         
             else:
                 pass
-                              
+          
+            
+            
+            
+            
+            
+            
+                  
             return redirect("rackapp:mycart")
