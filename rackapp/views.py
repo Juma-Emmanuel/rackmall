@@ -230,7 +230,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['myname'] = "Juma Emmanuel"
         context['product_list'] = Product.objects.all().order_by("-id")
-        context['product'] = Pro_duct.objects.all()
+        context['product'] = Product.objects.all()
         return context
 
 class AllProductsView(TemplateView):

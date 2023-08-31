@@ -1,4 +1,4 @@
-from .firebase_utils import *
+'''from .firebase_utils import *
 import firebase_admin
 from firebase_admin import credentials, db
 from .models import *
@@ -43,4 +43,4 @@ for product_id, pro_category in product_data.items():
             # Create Django model instances
             product = Pro_duct.objects.create(title=title, url=url, marked_price=marked_price, warranty=warranty, selling_price=selling_price, description=description, return_policy=return_policy)
 
-
+'''

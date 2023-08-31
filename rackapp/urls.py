@@ -9,7 +9,7 @@ urlpatterns = [
     
     path('data-list/', views.data_list_view, name="data_list_view"),
     path('post_product/', views.post_product, name="post_product"),
-    path('create_category/', views.create_category, name="create_category"),
+    #path('create_category/', views.create_category, name="create_category"),
 
  
     path('', HomeView.as_view(), name="home"),
