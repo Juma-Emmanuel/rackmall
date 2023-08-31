@@ -33,8 +33,8 @@ class Category(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique = True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="products")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)    
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
     description = models.TextField()
@@ -64,7 +64,7 @@ class CartProduct(models.Model):
     def __str__(self):
         return "Cart: " + str(self.cart.id) + "CartProduct: " + str(self.id) 
        
-class Pro_duct(models.Model):
+'''class Pro_duct(models.Model):
     title = models.CharField(max_length=200)
     url =  models.CharField(max_length=300)
     marked_price = models.PositiveIntegerField()
@@ -94,7 +94,7 @@ class F_CartProduct(models.Model):
     subtotal = models.PositiveIntegerField()
 
     def __str__(self):
-        return "F_Cart: " + str(self.cart.id) + "F_CartProduct: " + str(self.id) 
+        return "F_Cart: " + str(self.cart.id) + "F_CartProduct: " + str(self.id) '''
  
 
 ORDER_STATUS = (
