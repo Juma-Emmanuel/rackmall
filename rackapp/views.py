@@ -1,19 +1,22 @@
 from typing import Any, Dict
 import firebase_admin
-from firebase_admin import db
-from firebase_admin import storage
+
+from firebase_admin import firestore
 import datetime
 from django.shortcuts import render, redirect
 import requests
 from .firebase_utils import push_data, get_data, upload_image
 from .models import *
 from .fetch import *
-
-
+from .forms import *
+import json
+import os
 from django.views.generic import FormView
 from django.views.generic import TemplateView
+from google.cloud import storage
+db=firestore.Client()
 # Create your views here.
-def post_product(request):    
+'''def post_product(request):    
     if request.method == 'POST':
         if 'post_data' in request.POST:
             category = request.POST['category']
@@ -44,21 +47,21 @@ def post_product(request):
             response = push_data(category_to_post, "categories")
 
         
-        '''if category == 'lawn_tennis':
+        if category == 'lawn_tennis':
             response=push_data(data_to_post, "product/lawn_tennis")
         elif category == 'badminton':
             response=push_data(data_to_post, "product/badminton")
         elif category == 'table_tennis':
             response=push_data(data_to_post, "product/table_tennis")
         else:            
-            response=push_data(data_to_post, "product/other")'''
+            response=push_data(data_to_post, "product/other")
         
         
         
       
         
 
-    return render(request, 'post_product.html')
+    return render(request, 'post_product.html')'''
 
 
 class FirebaseDataView(TemplateView):
@@ -161,7 +164,7 @@ class EmptyCartView(TemplateView):
              cart.save()
          return redirect("rackapp:mycart")
 
-def post_data_to_firebase(request): 
+'''def post_data_to_firebase(request): 
     if request.method == 'POST':
         campus = request.POST['campus']
         course = request.POST['course']
@@ -217,7 +220,7 @@ def post_data_view(request):
 
         return redirect("data_list_view")
 
-    return render(request, "post_data.html")
+    return render(request, "post_data.html")'''
 
         
 def data_list_view(request):
@@ -228,7 +231,28 @@ class HomeView(TemplateView):
  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['myname'] = "Juma Emmanuel"
+        # Get the API key.
+        api_key = 'AIzaSyBSowLALprqKNkYUq5I7pKQtkfnwNLZ2Is'
+
+        # Create a new HTTP request.
+        request = requests.Request()
+
+        # Set the Authorization header.
+        request.headers['Authorization'] = 'Bearer {}'.format(api_key)
+
+        # Send the request to the API endpoint.
+        #response = request.send()
+
+        # Check the response status code.
+        #if response.status_code == 200:
+        # The request was successful.
+         #images = json.loads(response.content.decode())
+         #context['images'] = images
+        #else:
+            # The request failed.
+           # print('The request failed with status code {}.'.format(response.status_code))
+
+        #context['myname'] = "Juma Emmanuel"
         context['product_list'] = Product.objects.all().order_by("-id")
         context['product'] = Product.objects.all()
         return context
@@ -258,3 +282,77 @@ class ProductDetailView(TemplateView):
 
 class AboutView(TemplateView):
     template_name = "about.html"
+def create_category(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            # Create an instance of the S_Product model
+            category = form.save()
+
+            # Post the product data to Firestore
+            category_data = {
+                "title": category.title,
+                "slug": category.slug,              
+                # Add other fields here
+            }
+
+            # Store in Firestore collection
+            db.collection('categories').add(category_data)
+
+            # Redirect to a success page or do something else
+            return render(request, 'about.html')
+
+    else:
+        print('nooooooooo')
+        form =CategoryForm()
+        
+
+    return render(request, 'category_form.html', {'form': form})
+
+def create_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Create an instance of the Product model but don't save it to the database yet
+            product = form.save(commit=False)
+
+            # Handle the image field separately
+            image_file = request.FILES['image']
+            project_id = 'rackshop-e48b7'
+            storage_client = storage.Client()
+            bucket = storage_client.bucket('rackshop-e48b7.appspot.com')
+
+
+            image_blob = bucket.blob(os.path.join('products', image_file.name))
+            image_blob.upload_from_file(image_file)
+            url = image_blob.public_url
+            product.image_url = url
+            # Save the Product instance to the database
+            product.save()
+
+            # Post the product data to Firestore
+            product_data = {
+                "title": product.title,
+                "slug": product.slug,
+                "image_url": url,  # Store the URL to the image
+                "category": product.category.title,               
+                "marked_price": product.marked_price, 
+                "selling_price": product.selling_price, 
+                "description": product.description, 
+                "warranty": product.warranty, 
+                "return_policy": product.return_policy, 
+                "view_count": product.view_count, 
+                 # Add other fields here
+            }
+
+            # Store in Firestore collection
+            #db = firestore.client()
+            db.collection('products').add(product_data)
+
+            # Redirect to a success page or do something else
+            return render(request, 'about.html')
+
+    else:
+         form = ProductForm()
+
+    return render(request, 'product_form.html', {'form': form})

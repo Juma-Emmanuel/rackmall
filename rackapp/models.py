@@ -34,6 +34,7 @@ class Product(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique = True)
     image = models.ImageField(upload_to="products")
+    image_url = models.URLField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)    
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()

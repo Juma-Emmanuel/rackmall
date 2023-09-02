@@ -133,20 +133,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 FIREBASE_CONFIG = {
-  "apiKey": "AIzaSyAAxb2N1Ie7cRBzyrTnykjTacB5_IqlefY",
-  "authDomain": "racket-data.firebaseapp.com",
-  "databaseURL": "https://racket-data-default-rtdb.firebaseio.com/",
-  "projectId": "racket-data",
-  "storageBucket": "gs://racket-data.appspot.com",
-  "messagingSenderId": "1025185944579",
-  "appId": "1:1025185944579:web:8128536f6b534cad0f6a36"
+ 'apiKey': "AIzaSyCxcIcQBqOoLcVhXV7_mzl6GU1rIa2w_-c",
+  'authDomain': "rackshop-e48b7.firebaseapp.com",
+  "databaseURL": "https://rackshop-e48b7-default-rtdb.firebaseio.com",
+  "projectId": "rackshop-e48b7",
+  "storageBucket": "rackshop-e48b7.appspot.com",
+  "messagingSenderId": "39537971987",
+  "appId": "1:39537971987:web:db373be5f5eb1a445f40e6"
 }
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, firestore
 
 # Initialize Firebase using the credentials JSON file you downloaded from Firebase
-cred = credentials.Certificate('/home/emmanuel/myprograms/vault/racket-data-firebase-adminsdk-vwvj6-8256a80ca7.json')
+cred = credentials.Certificate("/home/emmanuel/fire/rackshop-e48b7-firebase-adminsdk-yq72d-68f9327a05.json")
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'racket-data.appspot.com',
-    'databaseURL': 'https://racket-data-default-rtdb.firebaseio.com/'
+    "storageBucket": "rackshop-e48b7.appspot.com",
+    "databaseURL": "https://rackshop-e48b7-default-rtdb.firebaseio.com",
 })

@@ -17,8 +17,9 @@
     <a href="/">Home</a>
     <a href="{% url 'rackapp:about' %}">About</a>
     <a href="{% url 'rackapp:allproducts' %}">Categories</a>
-    <a href="{% url 'rackapp:post_product' %}">Newproduct</a>
-    <a href="{% url 'rackapp:mycart' %}">Mycart</a><br><br>
+    <a href="">Newproduct</a>
+    <a href="{% url 'rackapp:mycart' %}">Mycart</a>
+    <a href="{% url 'rackapp:create_product' %}">Fireproduct</a><br><br>
     {% block content %}
     {% endblock %}
     </body>

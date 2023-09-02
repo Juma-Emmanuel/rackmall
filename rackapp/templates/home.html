@@ -26,8 +26,8 @@
         
         <div class="prod-container">
             <h3>{{p}}</h3>
-        <h3>{{child_value.title}}</h3>
-        <img src="{{p.url}}" alt="" width="200px ">
+        <h3>{{p.title}}</h3>
+        <img src="{{p.image_url}}" alt="" width="200px ">
         <br>
         <p>Price: <strike>Ksh. {{p.marked_price}}</strike>  Ksh. {{p.selling_price}}</p>
         <a href="{% url 'rackapp:addtocart' p.id %}" style="background-color: aqua; color: black;">Add To Cart</a>
