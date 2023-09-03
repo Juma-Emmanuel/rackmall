@@ -4,9 +4,9 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-md-8">
             <h4>Items in my Cart</h4>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for cp in cart.f_cartproduct_set.all %}
+                    {% for cp in cart.cartproduct_set.all %}
                     <tr>
                         <td>{{forloop.counter}}</td>
                         <td>{{cp.product.title}}</td>
@@ -26,14 +26,14 @@
                         <td>{{cp.quantity}}</td>
                         <td>{{cp.subtotal}}</td>
                         <td>
-                            <a href="{% url 'rackapp:managecart' cp.id %}?action=inc" > + </a>
-                            <a href="{% url 'rackapp:managecart' cp.id %}?action=dcr"> - </a>
-                            <a href="{% url 'rackapp:managecart' cp.id %}?action=rmv"> x </a>
+                            <a href="{% url 'rackapp:managecart' cp.id %}?action=inc" class="btn btn-primary"> + </a>
+                            <a href="{% url 'rackapp:managecart' cp.id %}?action=dcr" class="btn btn-warning"> - </a>
+                            <a href="{% url 'rackapp:managecart' cp.id %}?action=rmv" class="btn btn-danger"> x </a>
                         </td>
                     </tr>                    
                     {% endfor %}
                     <tr>
-                        <th>Total</th>
+                        <th colspan="4" class="text-right">Total</th>
                         <th>Ksh. {{cart.total}}</th>
                         {% if cart.cartproduct_set.all %}
                         <th><a href="{% url 'rackapp:emptycart' %}">Empty cart</a></th>

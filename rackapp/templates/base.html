@@ -19,7 +19,7 @@
     <a href="{% url 'rackapp:about' %}">About</a>
     <a href="{% url 'rackapp:allproducts' %}">Categories</a>
     <a href="">Newproduct</a>
-    <a href="">Mycart</a>
+    <a href="{% url 'rackapp:mycart' %}">Mycart</a>
     <a href="{% url 'rackapp:create_category' %}">Newcategory</a>
     <a href="{% url 'rackapp:create_product' %}">Newproduct</a><br><br><br><br>
     {% block content %}

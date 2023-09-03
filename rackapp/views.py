@@ -75,7 +75,7 @@ from django.views.generic import TemplateView
 
 #         context['datalist'] = data  # Pass the data to the template
 #         return context
-'''class AddToCartView(TemplateView):
+class AddToCartView(TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,9 +110,9 @@ from django.views.generic import TemplateView
             self.request.session['cart_id'] = cart_obj.id
             
     
-        return context'''''
+        return context
 
-'''class MyCartView(TemplateView):
+class MyCartView(TemplateView):
     template_name = "mycart.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,9 +122,9 @@ from django.views.generic import TemplateView
         else:
             cart=None 
         context['cart'] = cart 
-        return context'''
+        return context
 
-'''class ManageCartView(TemplateView):
+class ManageCartView(TemplateView):
         def get(self, request, *args, **kwargs):
             
             cp_id = self.kwargs["cp_id"]
@@ -152,9 +152,9 @@ from django.views.generic import TemplateView
                 cp_obj.delete()                            
             else:
                 pass
-            return redirect("rackapp:mycart")'''
+            return redirect("rackapp:mycart")
 
-'''class EmptyCartView(TemplateView):
+class EmptyCartView(TemplateView):
     def get(self, request, *args, **kwargs):
          cart_id = request.session.get("cart_id", None)
          if cart_id:
@@ -162,7 +162,7 @@ from django.views.generic import TemplateView
              cart.cartproduct_set.all().delete()
              cart.total = 0
              cart.save()
-         return redirect("rackapp:mycart")'''
+         return redirect("rackapp:mycart")
 
 '''def post_data_to_firebase(request): 
     if request.method == 'POST':
