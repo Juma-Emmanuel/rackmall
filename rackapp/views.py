@@ -5,17 +5,17 @@ from firebase_admin import firestore
 import datetime
 from django.shortcuts import render, redirect
 import requests
-from .firebase_utils import push_data, get_data, upload_image
+
 from .models import *
-from .fetch import *
+
 from .forms import *
 import json
 import os
 from django.views.generic import FormView
 from django.views.generic import TemplateView
-from google.cloud import storage
-db=firestore.Client()
-# Create your views here.
+
+# db=firestore.Client()
+# # Create your views here.
 '''def post_product(request):    
     if request.method == 'POST':
         if 'post_data' in request.POST:
@@ -64,18 +64,18 @@ db=firestore.Client()
     return render(request, 'post_product.html')'''
 
 
-class FirebaseDataView(TemplateView):
-    template_name = 'trialview.html'
+# class FirebaseDataView(TemplateView):
+#     template_name = 'trialview.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
 
-        # Retrieve data from Firebase
-        data = get_data("student/")
+#         # Retrieve data from Firebase
+#         data = get_data("student/")
 
-        context['datalist'] = data  # Pass the data to the template
-        return context
-class AddToCartView(TemplateView):
+#         context['datalist'] = data  # Pass the data to the template
+#         return context
+'''class AddToCartView(TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,9 +110,9 @@ class AddToCartView(TemplateView):
             self.request.session['cart_id'] = cart_obj.id
             
     
-        return context
+        return context'''''
 
-class MyCartView(TemplateView):
+'''class MyCartView(TemplateView):
     template_name = "mycart.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,9 +122,9 @@ class MyCartView(TemplateView):
         else:
             cart=None 
         context['cart'] = cart 
-        return context
+        return context'''
 
-class ManageCartView(TemplateView):
+'''class ManageCartView(TemplateView):
         def get(self, request, *args, **kwargs):
             
             cp_id = self.kwargs["cp_id"]
@@ -152,9 +152,9 @@ class ManageCartView(TemplateView):
                 cp_obj.delete()                            
             else:
                 pass
-            return redirect("rackapp:mycart")
+            return redirect("rackapp:mycart")'''
 
-class EmptyCartView(TemplateView):
+'''class EmptyCartView(TemplateView):
     def get(self, request, *args, **kwargs):
          cart_id = request.session.get("cart_id", None)
          if cart_id:
@@ -162,7 +162,7 @@ class EmptyCartView(TemplateView):
              cart.cartproduct_set.all().delete()
              cart.total = 0
              cart.save()
-         return redirect("rackapp:mycart")
+         return redirect("rackapp:mycart")'''
 
 '''def post_data_to_firebase(request): 
     if request.method == 'POST':
@@ -190,9 +190,9 @@ class EmptyCartView(TemplateView):
         response=push_data(data_to_post, "student/file")
 
 
-    return render(request, 'trialpost.html')
+    return render(request, 'trialpost.html')'''
 
-def post_data_view(request):
+'''def post_data_view(request):
     if request.method == "POST":
         title = request.POST.get("title")
         description = request.POST.get("description")
@@ -223,50 +223,29 @@ def post_data_view(request):
     return render(request, "post_data.html")'''
 
         
-def data_list_view(request):
-    data = get_data()
-    return render(request, "data_list.html", {"data": data, })
+# def data_list_view(request):
+#     data = get_data()
+#     return render(request, "data_list.html", {"data": data, })
 class HomeView(TemplateView):
     template_name = "home.html"
  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get the API key.
-        api_key = 'AIzaSyBSowLALprqKNkYUq5I7pKQtkfnwNLZ2Is'
-
-        # Create a new HTTP request.
-        request = requests.Request()
-
-        # Set the Authorization header.
-        request.headers['Authorization'] = 'Bearer {}'.format(api_key)
-
-        # Send the request to the API endpoint.
-        #response = request.send()
-
-        # Check the response status code.
-        #if response.status_code == 200:
-        # The request was successful.
-         #images = json.loads(response.content.decode())
-         #context['images'] = images
-        #else:
-            # The request failed.
-           # print('The request failed with status code {}.'.format(response.status_code))
-
-        #context['myname'] = "Juma Emmanuel"
+        context['myname'] = "Juma Emmanuel"
         context['product_list'] = Product.objects.all().order_by("-id")
         context['product'] = Product.objects.all()
         return context
 
-class AllProductsView(TemplateView):
-    template_name = "allproducts.html"
+# class AllProductsView(TemplateView):
+#     template_name = "allproducts.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['allcategories'] = Category.objects.all()
-        context['pro_duct'] = Product.objects.all()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['allcategories'] = Category.objects.all()
+#         context['pro_duct'] = Product.objects.all()
+#         return context'''
 
-class ProductDetailView(TemplateView):
+'''class ProductDetailView(TemplateView):
     template_name = "productdetail.html"
 
 
@@ -277,7 +256,7 @@ class ProductDetailView(TemplateView):
         product.view_count += 1
         product.save()
         context['product'] = product
-        return context
+        return context'''
 
 
 class AboutView(TemplateView):
@@ -287,25 +266,12 @@ def create_category(request):
         form = CategoryForm(request.POST)
         if form.is_valid():
             # Create an instance of the S_Product model
-            category = form.save()
-
-            # Post the product data to Firestore
-            category_data = {
-                "title": category.title,
-                "slug": category.slug,              
-                # Add other fields here
-            }
-
-            # Store in Firestore collection
-            db.collection('categories').add(category_data)
-
-            # Redirect to a success page or do something else
+            form.save()
             return render(request, 'about.html')
 
     else:
-        print('nooooooooo')
-        form =CategoryForm()
-        
+        #print('nooooooooo')
+        form =CategoryForm()   
 
     return render(request, 'category_form.html', {'form': form})
 
@@ -314,41 +280,7 @@ def create_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             # Create an instance of the Product model but don't save it to the database yet
-            product = form.save(commit=False)
-
-            # Handle the image field separately
-            image_file = request.FILES['image']
-            project_id = 'rackshop-e48b7'
-            storage_client = storage.Client()
-            bucket = storage_client.bucket('rackshop-e48b7.appspot.com')
-
-
-            image_blob = bucket.blob(os.path.join('products', image_file.name))
-            image_blob.upload_from_file(image_file)
-            url = image_blob.public_url
-            product.image_url = url
-            # Save the Product instance to the database
-            product.save()
-
-            # Post the product data to Firestore
-            product_data = {
-                "title": product.title,
-                "slug": product.slug,
-                "image_url": url,  # Store the URL to the image
-                "category": product.category.title,               
-                "marked_price": product.marked_price, 
-                "selling_price": product.selling_price, 
-                "description": product.description, 
-                "warranty": product.warranty, 
-                "return_policy": product.return_policy, 
-                "view_count": product.view_count, 
-                 # Add other fields here
-            }
-
-            # Store in Firestore collection
-            #db = firestore.client()
-            db.collection('products').add(product_data)
-
+            form.save()
             # Redirect to a success page or do something else
             return render(request, 'about.html')
 
