@@ -236,16 +236,16 @@ class HomeView(TemplateView):
         context['product'] = Product.objects.all()
         return context
 
-# class AllProductsView(TemplateView):
-#     template_name = "allproducts.html"
+class AllProductsView(TemplateView):
+    template_name = "allproducts.html"
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['allcategories'] = Category.objects.all()
-#         context['pro_duct'] = Product.objects.all()
-#         return context'''
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['allcategories'] = Category.objects.all()
+        context['pro_duct'] = Product.objects.all()
+        return context
 
-'''class ProductDetailView(TemplateView):
+class ProductDetailView(TemplateView):
     template_name = "productdetail.html"
 
 
@@ -256,7 +256,7 @@ class HomeView(TemplateView):
         product.view_count += 1
         product.save()
         context['product'] = product
-        return context'''
+        return context
 
 
 class AboutView(TemplateView):

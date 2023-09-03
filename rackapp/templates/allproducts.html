@@ -25,7 +25,7 @@
         <div class="col">
             {% for p in cat.product_set.all  %}
             <div class="prod-container">
-            <h3><a href="{% url 'rackapp:productdetail' p.slug %}">{{p.title}}</a></h3>
+            <h3><a href="">{{p.title}}</a></h3>
             <img src="{{p.image.url}}" alt="" width="200px ">
             <br>
             <p>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</p>

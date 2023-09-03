@@ -3,38 +3,22 @@
     {% block title %}Home{% endblock %}
 
     {% block content %}
-    <style>
-        
-     .col{
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            align-items: center;
-            gap: 2.5rem;
-        }
-        .prod-container{
-            border: 1px solid green;
-            align-items: center;
-            
-            display: flex;
-            flex-direction: column;
-        }
-        </style>
-    <h1> HOMEPAGE</h1>
-    <p>{{myname}}</p>
-    <div class="col">
+   
+    
+    <div class="container">
+    
+    <div class="row mt-3">
         {% for p in product %}
-        
-        <div class="prod-container">
-           
-        <h3>{{p.title}}</h3>
+        <div class="col-md-4">
+        <h3><a href="{% url 'rackapp:productdetail' p.slug %}">{{p.title}}</a></h3>
         <img src="{{p.image.url}}" alt="" width="200px ">
         <br>
         <p>Price: <strike>Ksh. {{p.marked_price}}</strike>  Ksh. {{p.selling_price}}</p>
-        <a href="" style="background-color: aqua; color: black;">Add To Cart</a>
+        <a href="" class="btn" style="background-color: aqua; color: black;">Add To Cart</a>
        </div>
         {% endfor %} 
     </div>
-  
+</div>
 </body>
 </html> 
     {% endblock %}

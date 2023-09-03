@@ -3,6 +3,20 @@
 
 {% block content %}
 <div class="container">
-    <h3>{{p.title}}</h3>
+    <h3>Product: {{p.title}}</h3><hr>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{product.image.url}}" alt="" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h4>{{product.title}} (Viewed {{product.view_count}} times)</h4>
+            <h5>Category: {{product.category}}</h5>
+            <h5>Price: <strike>Rs. {{p.marked_price}}</strike>Rs. {{p.selling_price}}</h5>
+       <a href="" class="btn btn-info">Add To Cart</a><hr>
+       <p class="text-info">Warranty: {{product.warranty}}</p>
+       <p class="text-info"> Return Policy: {{product.return_policy}}</p>
+       <p> Description: {{product.description}}</p>
+        </div>
+    </div>
 </div>
 {% endblock %}
