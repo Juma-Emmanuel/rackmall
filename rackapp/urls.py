@@ -23,6 +23,9 @@ urlpatterns = [
     path("managecart/<int:cp_id>", ManageCartView.as_view(), name="managecart"),
     path("emptycart/", EmptyCartView.as_view(), name="emptycart"),
     path("checkout/", CheckoutView.as_view(), name="checkout"),
+    path("register/",CustRegistrationView.as_view(), name="register"),
+    path("logout/",CustLogoutView.as_view(), name="logout"),
+    path("login/",CustLoginView.as_view(), name="login"),
 
 
 ]

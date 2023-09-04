@@ -1,82 +1,55 @@
 from typing import Any, Dict
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
-import firebase_admin
-
-from firebase_admin import firestore
+from .models import Customer
 import datetime
 from django.shortcuts import render, redirect
 import requests
-
+from django.contrib.auth import authenticate, login, logout
 from .models import *
 from django.urls import reverse_lazy
 from .forms import *
 import json
 import os
 from django.views.generic import FormView
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import View, TemplateView, CreateView
 
-# db=firestore.Client()
+# db=firestore.Client() 
 # # Create your views here.
-'''def post_product(request):    
-    if request.method == 'POST':
-        if 'post_data' in request.POST:
-            category = request.POST['category']
-            title  = request.POST['title']
-            description  = request.POST['description']
-            marked_price  = request.POST['marked_price']
-            selling_price  = request.POST['selling_price']
-            return_policy  = request.POST['return_policy']
-            warranty  = request.POST['warranty']
-            url  = request.POST['url']
-            data_to_post = {
-            "title": title,
-            "category": category,
-            "description": description,
-            "marked_price": marked_price,
-            "selling_price": selling_price,
-            "warranty": warranty,
-            "return_policy": return_policy,
-            "url": url,
-            }
-            push_data(data_to_post, "products")
-        elif 'add_category' in request.POST:
-            new_category = request.POST['new_category']
+class CustRegistrationView(CreateView):
+    template_name = "custregistration.html"
+    form_class = CustRegistrationForm
+    success_url = reverse_lazy("rackapp:home")
 
-            category_to_post = {
-            "title":new_category,
-              }
-            response = push_data(category_to_post, "categories")
-
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
         
-        if category == 'lawn_tennis':
-            response=push_data(data_to_post, "product/lawn_tennis")
-        elif category == 'badminton':
-            response=push_data(data_to_post, "product/badminton")
-        elif category == 'table_tennis':
-            response=push_data(data_to_post, "product/table_tennis")
-        else:            
-            response=push_data(data_to_post, "product/other")
-        
-        
-        
-      
-        
+        user = User.objects.create_user(username,email, password)
+        form.instance.user = user
+        login(self.request, user)
+        return super().form_valid(form)
 
-    return render(request, 'post_product.html')'''
+class CustLoginView(FormView):
+    template_name = "custlogin.html"
+    form_class = CustLoginForm    
+    success_url = reverse_lazy("rackapp:home")
 
+    def form_valid(self, form):
+        uname = form.cleaned_data.get("username")
+        pword = form.cleaned_data.get("password")
+        usr = authenticate(username=uname, password=pword)
+        if usr is not None and usr.customer:
+            login(self.request, usr)
+        else:
+            return render(self.request, self.template_name, {"form": self.form_class, "error": "Invalid Credentials"})
+        return super().form_valid(form)
 
-# class FirebaseDataView(TemplateView):
-#     template_name = 'trialview.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-
-#         # Retrieve data from Firebase
-#         data = get_data("student/")
-
-#         context['datalist'] = data  # Pass the data to the template
-#         return context
+class CustLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("rackapp:home")
 class AddToCartView(TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
@@ -194,73 +167,6 @@ class CheckoutView(CreateView):
             return redirect("rackapp:home")
         return super().form_valid(form)
 
-
-
-
-
-
-'''def post_data_to_firebase(request): 
-    if request.method == 'POST':
-        campus = request.POST['campus']
-        course = request.POST['course']
-        cunit1 = request.POST['cunit1']
-        cunit2 = request.POST['cunit2']
-
-        # Create a Django model instance and save it to the database
-        
-        
-
-        # Post the data to Firebase
-        data_to_post = {
-            "campus": campus,
-            "course": course,
-            "units": {
-                "cunits": {
-                    "cunit1": cunit1,
-                    "cunit2": cunit2,
-                }
-        },
-            # Add other fields as needed
-        }
-        response=push_data(data_to_post, "student/file")
-
-
-    return render(request, 'trialpost.html')'''
-
-'''def post_data_view(request):
-    if request.method == "POST":
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        url = request.POST.get("url")
-        image = request.FILES.get("image")
-
-        data = {
-            "title": title,
-            "description": description,
-            'url': url, 
-        }
-
-        # Call push_data to post the data and get the response
-        response = push_data(data)
-
-        if response.status_code == 200:
-            # Parse the response JSON to get the generated key
-            response_data = response.json()
-            data_key = response_data.get("name")
-
-            if image:
-                image_url = upload_image(image.read(), image.name)
-                # Save the image URL in the Realtime Database under the specific data key
-                db.reference(f"data/{data_key}").update({"image_url": image_url})
-
-        return redirect("data_list_view")
-
-    return render(request, "post_data.html")'''
-
-        
-# def data_list_view(request):
-#     data = get_data()
-#     return render(request, "data_list.html", {"data": data, })
 class HomeView(TemplateView):
     template_name = "home.html"
  

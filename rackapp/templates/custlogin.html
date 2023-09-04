@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+{% block title %}SignIn{% endblock %}
+
+{% block content %}
+<style>
+    .errorlist{
+        color: red;
+    }
+    
+    .errorlist li {
+    list-style: none;
+    }
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h3></h3>
+            <form action="" method="POST">
+                {% if error %}
+                <li style="color: red; list-style: none;">{{error}}</li>
+                {% endif %}
+                {%csrf_token %}
+                {{form.as_p}}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Errors:</strong>
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <button class="btn btn-primary">Login</button>
+            </form>
+            <p>Dont have account? <a href="{% url 'rackapp:register' %}">Sign up</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
