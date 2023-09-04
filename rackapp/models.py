@@ -65,13 +65,6 @@ class CartProduct(models.Model):
         return "Cart: " + str(self.cart.id) + "CartProduct: " + str(self.id) 
        
 
-
-
-
-
-
- 
-
 ORDER_STATUS = (
     ("Order Received", "Order Received"),
     ("Order Processing", "Order Processing"), 

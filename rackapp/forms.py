@@ -10,4 +10,7 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = '__all__'
-        
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ["ordered_by","shipping_address","mobile","email"]
