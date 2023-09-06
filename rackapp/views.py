@@ -275,7 +275,7 @@ class AdminRequiredMixin(object):
         if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
             pass
         else:
-            return redirect("/login/?next=/profile")
+            return redirect("/admin-login/")
 
         return super().dispatch(request, *args, **kwargs) 
 
@@ -297,38 +297,26 @@ class AdminLoginView(FormView):
 
         
 
-class AdminHomeView(FormView):
+class AdminHomeView(AdminRequiredMixin, FormView):
     template_name = "adminpages/adminhome.html"
     form_class = CustLoginForm
     success_url = reverse_lazy("rackapp:adminhome")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
-            pass
-        else:
-            return redirect("/login/?next=/profile")
-
-        return super().dispatch(request, *args, **kwargs) 
+    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["pendingorders"] = Order.objects.filter(
-            order_status = "Order Received")
+            order_status = "Order Received").order_by("-id")
 
         return context
 
-class AdminOrderDetailView(DetailView):
+class AdminOrderDetailView(AdminRequiredMixin, DetailView):
     template_name = "adminpages/adminorderdetail.html"
     model = Order
     context_object_name = "ord_obj"
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
-            pass
-        else:
-            return redirect("/login/?next=/profile")
-
-        return super().dispatch(request, *args, **kwargs) 
+    
 
 def create_category(request):
     if request.method == 'POST':
