@@ -24,6 +24,7 @@
     <a href="{% url 'rackapp:create_product' %}">Newproduct</a>
     {% if request.user.customer %}
     Welcome {{request.user.username}}
+    <a href="{% url 'rackapp:profile' %}">Myprofile</a>
     <a href="{% url 'rackapp:logout' %}">Logout</a>
     {% else %}
     <a href="{% url 'rackapp:register' %}">Register</a>

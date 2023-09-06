@@ -26,6 +26,9 @@ urlpatterns = [
     path("register/",CustRegistrationView.as_view(), name="register"),
     path("logout/",CustLogoutView.as_view(), name="logout"),
     path("login/",CustLoginView.as_view(), name="login"),
+    path("profile/",CustProfileView.as_view(), name="profile"),
+     path("profile/order<int:pk>/",CustOrderDetailView.as_view(), name="orderdetail"),
+
 
 
 ]

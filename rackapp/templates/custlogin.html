@@ -37,7 +37,8 @@
                 {% endif %}
                 <button class="btn btn-primary">Login</button>
             </form>
-            <p>Dont have account? <a href="{% url 'rackapp:register' %}">Sign up</a></p>
+            <p>Dont have account? <a href="{% url 'rackapp:register' %}{% if request.Get.next %}
+                ?next={{request.Get.next}}{% endif %}">Sign up</a></p>
         </div>
     </div>
 </div>

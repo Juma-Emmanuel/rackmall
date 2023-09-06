@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django import http
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from .models import Customer
@@ -12,10 +13,19 @@ from .forms import *
 import json
 import os
 from django.views.generic import FormView
-from django.views.generic import View, TemplateView, CreateView
+from django.views.generic import View, TemplateView, CreateView, DetailView
 
 # db=firestore.Client() 
 # # Create your views here.
+class RackMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        cart_id = request.session.get("cart_id")
+        if cart_id:
+            cart_obj = Cart.objects.get(id=cart_id)
+            if request.user.is_authenticated and request.user.customer:
+                cart_obj.customer = request.user.customer
+                cart_obj.save()
+            return super().dispatch(request, *args, **kwargs)
 class CustRegistrationView(CreateView):
     template_name = "custregistration.html"
     form_class = CustRegistrationForm
@@ -30,6 +40,12 @@ class CustRegistrationView(CreateView):
         form.instance.user = user
         login(self.request, user)
         return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
 
 class CustLoginView(FormView):
     template_name = "custlogin.html"
@@ -45,12 +61,55 @@ class CustLoginView(FormView):
         else:
             return render(self.request, self.template_name, {"form": self.form_class, "error": "Invalid Credentials"})
         return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
 
 class CustLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("rackapp:home")
-class AddToCartView(TemplateView):
+    
+class CustProfileView(TemplateView):
+    template_name = "custprofile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect("/login/?next=/profile")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs )
+        customer = self.request.user.customer
+        context['customer'] = customer 
+        orders = Order.objects.filter(cart__customer=customer).order_by("-id")
+        context["orders"] = orders
+        return context
+
+class CustOrderDetailView(DetailView):
+    template_name = "orderdetail.html"
+    model = Order
+    context_object_name = "ord_obj"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            order_id = self.kwargs["pk"]
+            order = Order.objects.get(id=order_id)
+            if request.user.customer != order.cart.customer:
+                return redirect("rackapp:profile")
+        else:
+            return redirect("/login/?next=/profile/")
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+class AddToCartView(RackMixin, TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,7 +146,7 @@ class AddToCartView(TemplateView):
     
         return context
 
-class MyCartView(TemplateView):
+class MyCartView(RackMixin, TemplateView):
     template_name = "mycart.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -99,7 +158,7 @@ class MyCartView(TemplateView):
         context['cart'] = cart 
         return context
 
-class ManageCartView(TemplateView):
+class ManageCartView(RackMixin, TemplateView):
         def get(self, request, *args, **kwargs):
             
             cp_id = self.kwargs["cp_id"]
@@ -129,7 +188,7 @@ class ManageCartView(TemplateView):
                 pass
             return redirect("rackapp:mycart")
 
-class EmptyCartView(TemplateView):
+class EmptyCartView(RackMixin, TemplateView):
     def get(self, request, *args, **kwargs):
          cart_id = request.session.get("cart_id", None)
          if cart_id:
@@ -139,11 +198,19 @@ class EmptyCartView(TemplateView):
              cart.save()
          return redirect("rackapp:mycart")
 
-class CheckoutView(CreateView):
+class CheckoutView(RackMixin, CreateView):
     template_name = "checkout.html"
     form_class = CheckoutForm
     success_url = reverse_lazy("rackapp:home")
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect("/login/?next=/checkout/")
+
+        return super().dispatch(request, *args, **kwargs)
+ 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_id = self.request.session.get("cart_id", None)
