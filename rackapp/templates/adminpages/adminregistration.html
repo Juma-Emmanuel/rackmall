@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% block title %}ADMINSignUp{% endblock %}
+
+{% block content %}
+<style>
+    .errorlist{
+        color: red;
+    }
+    
+    .errorlist li {
+    list-style: none;
+    }
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h3>ADMIN</h3>
+            <form action="" method="POST">
+                {%csrf_token %}
+                {{form.as_p}}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Errors:</strong>
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <button class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

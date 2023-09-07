@@ -13,7 +13,7 @@ from .forms import *
 import json
 import os
 from django.views.generic import FormView
-from django.views.generic import View, TemplateView, CreateView, DetailView
+from django.views.generic import View, TemplateView, CreateView, DetailView, ListView
 
 # db=firestore.Client() 
 # # Create your views here.
@@ -270,6 +270,28 @@ class ProductDetailView(TemplateView):
 class AboutView(TemplateView):
     template_name = "about.html"
 
+class AdminRegistrationView(CreateView):
+    template_name = "adminregistration.html"
+    form_class = CustRegistrationForm
+    success_url = reverse_lazy("rackapp:home")
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
+        
+        user = User.objects.create_user(username,email, password)
+        form.instance.user = user
+        login(self.request, user)
+        return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
+
+
 class AdminRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
@@ -315,7 +337,10 @@ class AdminOrderDetailView(AdminRequiredMixin, DetailView):
     template_name = "adminpages/adminorderdetail.html"
     model = Order
     context_object_name = "ord_obj"
-
+class AdminOrderListView(AdminRequiredMixin, ListView):
+    template_name = "adminpages/adminorderlist.html"
+    queryset = Order.objects.all().order_by("-id")
+    context_object_name = "allorders"
     
 
 def create_category(request):

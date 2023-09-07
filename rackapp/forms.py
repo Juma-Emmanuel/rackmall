@@ -25,6 +25,21 @@ class  CustRegistrationForm(forms.ModelForm):
             if User.objects.filter(username=uname).exists():
                 raise forms.ValidationError("this username already exists")
             return uname
+    
+class  AdminRegistrationForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.CharField(widget=forms.EmailInput())
+    class Meta:
+        model = Admin
+        # "username","password","email", 
+        fields = ["username", "password","email","full_name", "address"]
+
+    def clean_username(self):
+            uname = self.cleaned_data.get("username")
+            if User.objects.filter(username=uname).exists():
+                raise forms.ValidationError("this username already exists")
+            return uname
 
 class  CustLoginForm(forms.Form):
         username = forms.CharField(widget=forms.TextInput())
