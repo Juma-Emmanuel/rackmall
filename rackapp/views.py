@@ -252,6 +252,16 @@ class AllProductsView(TemplateView):
         context['allcategories'] = Category.objects.all()
         context['pro_duct'] = Product.objects.all()
         return context
+class SearchView(TemplateView):
+    template_name = "search.html"
+
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        kw = self.request.GET.get("keyword")
+        results = Product.objects.filter(title__icontains=kw)
+        context["results"] = results
+        return context
 
 class ProductDetailView(TemplateView):
     template_name = "productdetail.html"
@@ -271,8 +281,8 @@ class AboutView(TemplateView):
     template_name = "about.html"
 
 class AdminRegistrationView(CreateView):
-    template_name = "adminregistration.html"
-    form_class = CustRegistrationForm
+    template_name = "adminpages/adminregistration.html"
+    form_class = AdminRegistrationForm
     success_url = reverse_lazy("rackapp:home")
 
     def form_valid(self, form):
@@ -337,11 +347,29 @@ class AdminOrderDetailView(AdminRequiredMixin, DetailView):
     template_name = "adminpages/adminorderdetail.html"
     model = Order
     context_object_name = "ord_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["allstatus"] = ORDER_STATUS
+
+        return context
+
+
 class AdminOrderListView(AdminRequiredMixin, ListView):
     template_name = "adminpages/adminorderlist.html"
     queryset = Order.objects.all().order_by("-id")
     context_object_name = "allorders"
     
+
+class OrderStatuschangeView(AdminRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        order_id = self.kwargs["pk"]
+        order_obj = Order.objects.get(id=order_id)
+        new_status = request.POST.get("status")
+        order_obj.order_status = new_status
+        order_obj.save()
+
+        return redirect(reverse_lazy("rackapp:adminorderdetail", kwargs={"pk": self.kwargs["pk"]} ))
 
 def create_category(request):
     if request.method == 'POST':

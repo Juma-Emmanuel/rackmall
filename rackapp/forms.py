@@ -33,7 +33,7 @@ class  AdminRegistrationForm(forms.ModelForm):
     class Meta:
         model = Admin
         # "username","password","email", 
-        fields = ["username", "password","email","full_name", "address"]
+        fields = ["username", "password","email","full_name"]
 
     def clean_username(self):
             uname = self.cleaned_data.get("username")

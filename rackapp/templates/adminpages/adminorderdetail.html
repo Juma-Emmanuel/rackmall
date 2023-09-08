@@ -1,4 +1,4 @@
-{% extends 'adminbase.html' %}
+{% extends 'adminpages/adminbase.html' %}
 {% block title %}Order detail{% endblock %}
 
 {% block content %}
@@ -42,7 +42,17 @@
                 </tbody>             
 
             </table>
-
+            <form action="{% url 'rackapp:orderstatuschange' ord_obj.id %}" method="POST">
+                {% csrf_token %}
+                <select name="status" id="">
+                    {% for i, j in allstatus %}
+                    <option value="{{i}}" {% if i == ord_obj.order_status %}selected{% endif %}>{{j}}</option>
+                    {% endfor %}
+                    <button class="btn btn-info">Change</button>
+                
+                </select>
+                <button class="btn btn-info">Change</button>
+            </form>
         </div>
     </div>
 </div>

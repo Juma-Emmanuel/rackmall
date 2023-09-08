@@ -28,11 +28,13 @@ urlpatterns = [
     path("login/",CustLoginView.as_view(), name="login"),
     path("profile/",CustProfileView.as_view(), name="profile"),
     path("profile/order<int:pk>/",CustOrderDetailView.as_view(), name="orderdetail"),
+    path("search/", SearchView.as_view(), name="search"),
     path("admin-login/",AdminLoginView.as_view(), name="adminlogin"),
     path("admin-home/",AdminHomeView.as_view(), name="admin-home"),
     path("admin-order/<int:pk>/", AdminOrderDetailView.as_view(), name="adminorderdetail"),
     path("admin-all-orders/",AdminOrderListView.as_view(), name="adminorderlist"),
     path("Aregister/",AdminRegistrationView.as_view(), name="Aregister"),
+    path("admin-order-<int:pk>-change/",OrderStatuschangeView.as_view(), name="orderstatuschange"),
 
 
 
