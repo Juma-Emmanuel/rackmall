@@ -7,6 +7,7 @@ import datetime
 from django.shortcuts import render, redirect
 import requests
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 from .models import *
 from django.urls import reverse_lazy
 from .forms import *
@@ -259,7 +260,7 @@ class SearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         kw = self.request.GET.get("keyword")
-        results = Product.objects.filter(title__icontains=kw)
+        results = Product.objects.filter(Q(title__icontains=kw) | Q(description__icontains=kw))
         context["results"] = results
         return context
 
