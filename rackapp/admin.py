@@ -4,4 +4,4 @@ from .models import *
 
 
 
-# admin.site.register([Customer, Category, Product, Cart, CartProduct,  Order])
+# admin.site.register([])
