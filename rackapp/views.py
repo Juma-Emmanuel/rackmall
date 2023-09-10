@@ -110,7 +110,7 @@ class CustOrderDetailView(DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class AddToCartView(RackMixin, TemplateView):
+class AddToCartView( TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -146,8 +146,12 @@ class AddToCartView(RackMixin, TemplateView):
             
     
         return context
+    def get(self, request, *args, **kwargs):
+        # Your existing code here...
 
-class MyCartView(RackMixin, TemplateView):
+        return HttpResponse("Added to cart successfully.") 
+
+class MyCartView( TemplateView):
     template_name = "mycart.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -157,9 +161,10 @@ class MyCartView(RackMixin, TemplateView):
         else:
             cart=None 
         context['cart'] = cart 
+        print(cart)
         return context
 
-class ManageCartView(RackMixin, TemplateView):
+class ManageCartView( TemplateView):
         def get(self, request, *args, **kwargs):
             
             cp_id = self.kwargs["cp_id"]
@@ -189,7 +194,7 @@ class ManageCartView(RackMixin, TemplateView):
                 pass
             return redirect("rackapp:mycart")
 
-class EmptyCartView(RackMixin, TemplateView):
+class EmptyCartView( TemplateView):
     def get(self, request, *args, **kwargs):
          cart_id = request.session.get("cart_id", None)
          if cart_id:
