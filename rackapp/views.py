@@ -395,9 +395,9 @@ def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            # Create an instance of the Product model but don't save it to the database yet
+            
             form.save()
-            # Redirect to a success page or do something else
+            
             return render(request, 'about.html')
 
     else:
