@@ -146,10 +146,10 @@ class AddToCartView( TemplateView):
             
     
         return context
-    def get(self, request, *args, **kwargs):
-        # Your existing code here...
+    # def get(self, request, *args, **kwargs):
+    #     # Your existing code here...
 
-        return HttpResponse("Added to cart successfully.") 
+    #     return HttpResponse("Added to cart successfully.") 
 
 class MyCartView( TemplateView):
     template_name = "mycart.html"
