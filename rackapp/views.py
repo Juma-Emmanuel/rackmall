@@ -110,7 +110,7 @@ class CustOrderDetailView(DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class AddToCartView( TemplateView):
+class AddToCartView(TemplateView):
     template_name = 'addtocart.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
