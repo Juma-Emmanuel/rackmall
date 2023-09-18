@@ -162,6 +162,7 @@ class MyCartView( TemplateView):
             cart=None 
         context['cart'] = cart 
         print(cart)
+        
         return context
 
 class ManageCartView( TemplateView):

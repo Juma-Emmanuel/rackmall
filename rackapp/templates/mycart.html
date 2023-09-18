@@ -20,6 +20,7 @@
                 <tbody>
                     {% for cp in cart.cartproduct_set.all %}
                     <tr>
+                       
                         <td>{{forloop.counter}}</td>
                         <td>{{cp.product.title}}</td>
                         <td>{{cp.rate}}</td>
