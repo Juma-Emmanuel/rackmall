@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from .models import Customer
 import datetime
 from django.shortcuts import render, redirect
-import requests
+# import requests
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import *

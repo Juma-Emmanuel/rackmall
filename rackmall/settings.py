@@ -75,13 +75,13 @@ WSGI_APPLICATION = 'rackmall.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rackmall',
-        'USER': 'emmanuel',
-        'PASSWORD': 'costaliteps@2023',
-        'HOST': 'localhost'
-    }
+    # # 'default': {
+    # #     'ENGINE': 'django.db.backends.postgresql',
+    # #     'NAME': 'rackmall',
+    # #     'USER': 'emmanuel',
+    # #     'PASSWORD': 'costaliteps@2023',
+    # #     'HOST': 'localhost'
+    # }
 }
 
 
@@ -143,12 +143,4 @@ FIREBASE_CONFIG = {
   "messagingSenderId": "39537971987",
   "appId": "1:39537971987:web:db373be5f5eb1a445f40e6"
 }
-import firebase_admin
-from firebase_admin import credentials, firestore
 
-# Initialize Firebase using the credentials JSON file you downloaded from Firebase
-cred = credentials.Certificate("/home/emmanuel/fire/rackshop-e48b7-firebase-adminsdk-yq72d-68f9327a05.json")
-firebase_admin.initialize_app(cred, {
-    "storageBucket": "rackshop-e48b7.appspot.com",
-    "databaseURL": "https://rackshop-e48b7-default-rtdb.firebaseio.com",
-})
