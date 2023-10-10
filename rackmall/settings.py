@@ -75,13 +75,13 @@ WSGI_APPLICATION = 'rackmall.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # # 'default': {
-    # #     'ENGINE': 'django.db.backends.postgresql',
-    # #     'NAME': 'rackmall',
-    # #     'USER': 'emmanuel',
-    # #     'PASSWORD': 'costaliteps@2023',
-    # #     'HOST': 'localhost'
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'rackmall',
+        'USER': 'emmanuel',
+        'PASSWORD': 'costaliteps@2023',
+        'HOST': 'localhost'
+    }
 }
 
 
