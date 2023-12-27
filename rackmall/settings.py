@@ -82,6 +82,14 @@ DATABASES = {
         'PASSWORD': 'costaliteps@2023',
         'HOST': 'localhost'
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'rackmall',
+    #     'USER': 'root',
+    #     'PASSWORD': 'pass123',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
 }
 
 

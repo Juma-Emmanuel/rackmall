@@ -13,11 +13,14 @@ from django.urls import reverse_lazy
 from .forms import *
 import json
 import os
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import FormView
 from django.views.generic import View, TemplateView, CreateView, DetailView, ListView
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
 
-# db=firestore.Client() 
-# # Create your views here.
+
 class RackMixin(object):
     def dispatch(self, request, *args, **kwargs):
         cart_id = request.session.get("cart_id")
@@ -71,6 +74,10 @@ class CustLoginView(FormView):
 
 class CustLogoutView(View):
     def get(self, request):
+        cart_id = self.request.session.get("cart_id", None)
+        if cart_id:
+            cart_obj = Cart.objects.get(id=cart_id)
+            cart_obj.save()
         logout(request)
         return redirect("rackapp:home")
     
@@ -143,13 +150,14 @@ class AddToCartView(TemplateView):
         else:
             cart_obj = Cart.objects.create(total=0)
             self.request.session['cart_id'] = cart_obj.id
-            
+            cartproduct = CartProduct.objects.create(
+                cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
+            cart_obj.total += product_obj.selling_price
+            cart_obj.save()
+
     
         return context
-    # def get(self, request, *args, **kwargs):
-    #     # Your existing code here...
-
-    #     return HttpResponse("Added to cart successfully.") 
+   
 
 class MyCartView( TemplateView):
     template_name = "mycart.html"
@@ -283,7 +291,6 @@ class ProductDetailView(TemplateView):
         context['product'] = product
         return context
 
-
 class AboutView(TemplateView):
     template_name = "about.html"
 
@@ -334,14 +341,13 @@ class AdminLoginView(FormView):
         return super().form_valid(form)
 
 
-        
 
-class AdminHomeView(AdminRequiredMixin, FormView):
+@method_decorator(staff_member_required, name='dispatch')
+class AdminHomeView( TemplateView):
     template_name = "adminpages/adminhome.html"
-    form_class = CustLoginForm
-    success_url = reverse_lazy("rackapp:adminhome")
-
-    
+   
+    def test_func(self):
+                return self.request.user.is_staff
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -350,10 +356,14 @@ class AdminHomeView(AdminRequiredMixin, FormView):
 
         return context
 
-class AdminOrderDetailView(AdminRequiredMixin, DetailView):
+@method_decorator(staff_member_required, name='dispatch')
+class AdminOrderDetailView( DetailView):
     template_name = "adminpages/adminorderdetail.html"
     model = Order
     context_object_name = "ord_obj"
+
+    def test_func(self):
+                return self.request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -361,14 +371,16 @@ class AdminOrderDetailView(AdminRequiredMixin, DetailView):
 
         return context
 
-
-class AdminOrderListView(AdminRequiredMixin, ListView):
+@method_decorator(staff_member_required, name='dispatch')
+class AdminOrderListView(ListView):
     template_name = "adminpages/adminorderlist.html"
     queryset = Order.objects.all().order_by("-id")
     context_object_name = "allorders"
     
-
-class OrderStatuschangeView(AdminRequiredMixin, View):
+@method_decorator(staff_member_required, name='dispatch')
+class OrderStatuschangeView(View):
+    def test_func(self):
+                return self.request.user.is_staff
     def post(self, request, *args, **kwargs):
         order_id = self.kwargs["pk"]
         order_obj = Order.objects.get(id=order_id)
@@ -378,6 +390,8 @@ class OrderStatuschangeView(AdminRequiredMixin, View):
 
         return redirect(reverse_lazy("rackapp:adminorderdetail", kwargs={"pk": self.kwargs["pk"]} ))
 
+
+@staff_member_required
 def create_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -392,6 +406,8 @@ def create_category(request):
 
     return render(request, 'category_form.html', {'form': form})
 
+
+@staff_member_required
 def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
