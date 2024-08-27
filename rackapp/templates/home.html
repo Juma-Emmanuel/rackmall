@@ -4,21 +4,91 @@
 
     {% block content %}
    
-    
-    <div class="container">
-    
-    <div class="row mt-3">
+    <style>      
+    body{
+        
+        align-items: center;
+        justify-content: center;
+    }  
+       
+        .colt{
+              /* background-color: #f9f9f9; */
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            grid-template-columns: repeat(5,0.01fr);
+            gap: 0.5rem;
+            
+        }
+        .event{
+            text-decoration: none;
+        }
+        .prod-container{     
+            align-items: flex-start;
+            width: 16rem;
+            height: fit-content;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;            
+            border-radius: 10px; 
+             transition: box-shadow 0.3s ease;
+        }
+
+        .prod-container:hover{
+            /* transform: scale(1.05);  */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            
+        }
+     
+.prod-img{
+   height: 17rem;
+}
+.prod-title {
+    text-align: left;
+   color: black;
+   font-weight: bold;
+  font-size: 15px;                
+  overflow: hidden;               
+  text-overflow: ellipsis;        
+  display: -webkit-box;           
+  -webkit-line-clamp: 2;          
+  -webkit-box-orient: vertical;          
+}
+.price{
+    color: green;
+    font-weight: bold;
+}
+.btn{
+    width: 100%;
+}
+.btn:hover{
+    color: aqua;
+    background-color: white;
+    border: 1px solid aqua;
+}
+
+        </style>
+    <div class="colt">
+   
         {% for p in product %}
-        <div class="col-md-4">
-        <h3><a href="{% url 'rackapp:productdetail' p.slug %}">{{p.title}}</a></h3>
-        <img src="{{p.image.url}}" alt="" width="200px ">
-        <br>
-        <p>Price: <strike>Ksh. {{p.marked_price}}</strike>  Ksh. {{p.selling_price}}</p>
-        <a href="{% url 'rackapp:addtocart' p.id %}" class="btn" style="background-color: aqua; color: black;">Add To Cart</a>
-       </div>
-        {% endfor %} 
+        <div class="prod-container">
+          <a class="event" href="{% url 'rackapp:productdetail' p.slug %}">
+
+          <div class="prod-img">          
+     
+            <img  src="{{p.image.url}}" alt="" width="100%" height="80%">
+        </div>
+            
+            <h3  class="prod-title" >{{p.title}} {{p.title}}</h3>
+            <p class="price">Price: <strike>Ksh. {{p.marked_price}}</strike>  Ksh. {{p.selling_price}}</p>
+        </a>
+            <a href="{% url 'rackapp:addtocart' p.id %}" class="btn" >Add To Cart</a>
+           </div>
+           {% endfor %} 
     </div>
-</div>
+    
+   
+
 </body>
 </html> 
     {% endblock %}

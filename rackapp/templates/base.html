@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
     <style>
-    .box{display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    align-items: center;
-    gap: 2.5rem;
-    }
+      .box {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+        gap: 2.5rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-    
-    <a href="/">Home</a>
-    <a href="{% url 'rackapp:about' %}">About</a>
-    <a href="{% url 'rackapp:allproducts' %}">Categories</a>
-    <a href="">Newproduct</a>
-    <a href="{% url 'rackapp:mycart' %}">Mycart</a>
-    <a href="{% url 'rackapp:create_category' %}">Newcategory</a>
-    <a href="{% url 'rackapp:create_product' %}">Newproduct</a>
-    {% if request.user.customer %}
-    Welcome {{request.user.username}}
-    <a href="{% url 'rackapp:profile' %}">Myprofile</a>
-    <a href="{% url 'rackapp:logout' %}">Logout</a>
-    {% else %}
-    <a href="{% url 'rackapp:register' %}">Register</a>
-    <a href="{% url 'rackapp:login' %}">Login</a><br><br><br><br>
-    {% endif %}
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 mx-auto">
-            <form action="{% url 'rackapp:search' %}" method="GET">
-                <input type="text" name="keyword" placeholder="Search here" required>
-                <button>Search</button>
-            </form>
-        </div>
-    </div>
-</div>
+      <a href="/">Home</a>
+      <a href="{% url 'rackapp:about' %}">About</a>
+      <a href="{% url 'rackapp:allproducts' %}">Categories</a>
 
-    {% block content %}
-    {% endblock %}
-    </body>
-    </html> 
+      <a href="{% url 'rackapp:mycart' %}">Mycart</a>
+      <!-- <a href="{% url 'rackapp:create_category' %}">Newcategory</a>
+    <a href="{% url 'rackapp:create_product' %}">Newproduct</a> -->
+      {% if request.user.customer %} Welcome {{request.user.username}}
+      <a href="{% url 'rackapp:profile' %}">Myprofile</a>
+      <a href="{% url 'rackapp:logout' %}">Logout</a>
+      {% else %}
+      <a href="{% url 'rackapp:register' %}">Register</a>
+      <a href="{% url 'rackapp:login' %}">Login</a><br /><br /><br /><br />
+      {% endif %}
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <form action="{% url 'rackapp:search' %}" method="GET">
+            <input
+              type="text"
+              name="keyword"
+              placeholder="Search here"
+              required
+            />
+            <button>Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {% block content %} {% endblock %}
+  </body>
+</html>

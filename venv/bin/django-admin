@@ -1,4 +1,4 @@
-#!/home/emmanuel/apps/rackmall/venv/bin/python3
+#!/home/emmanuel/DjangoApps/rackmall/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
